@@ -1,0 +1,578 @@
+================================================================================
+  MODEL CONFIGURATIONS — quantumstd1
+  All model families: Classical, Sklearn, PyTorch Deep Learning, Quantum
+================================================================================
+
+
+================================================================================
+  1. CLASSICAL ALSTM
+================================================================================
+
+  Model          : CLASSICAL ALSTM
+  Type           : Attention LSTM (TensorFlow/Keras)
+  Architecture   : LSTM with optional soft attention on hidden states
+  Sequence len   : 5  (-l)
+  Hidden units   : 32  (-u)
+  Epochs         : 150  (-e)
+  Batch size     : 1024  (-b)
+  Learning rate  : 0.01  (-r)
+  Attention      : ON  (-a 1)
+  Hinge loss     : ON  (-hi 1)
+  Adversarial    : OFF  (-v 0)
+  Optimizer      : RMSprop
+  Loss           : Hinge (MSE fallback)
+
+
+================================================================================
+  2. SKLEARN MODELS  (auto-discovered, all use SklearnTrainer base)
+================================================================================
+
+  Input handling : 3D (samples, seq, features) flattened to 2D
+  Auto-calibrate : Pilot fit on 50 samples; cap training size to time_budget
+                   When time_budget=0 (--time_limit 0), uses full dataset
+
+  ── Linear / GLM ─────────────────────────────────────────────────────────────
+
+  LOGISTIC REGRESSION
+    Estimator    : LogisticRegression
+    max_iter     : 100
+    solver       : lbfgs
+    random_state : 42
+
+  RIDGE
+    Estimator    : RidgeClassifier
+    alpha        : 1.0
+
+  SGD HINGE
+    Estimator    : SGDClassifier
+    loss         : hinge
+    alpha        : 1e-4
+    max_iter     : 200
+
+  SGD LOG
+    Estimator    : SGDClassifier
+    loss         : log_loss
+    alpha        : 1e-4
+    max_iter     : 200
+
+  SGD MODHUBER
+    Estimator    : SGDClassifier
+    loss         : modified_huber
+    alpha        : 1e-4
+    max_iter     : 200
+
+  LINEAR SVC
+    Estimator    : LinearSVC
+    C            : 0.5
+    tol          : 1e-3
+    max_iter     : 2000
+
+  PASSIVE AGGRESSIVE
+    Estimator    : PassiveAggressiveClassifier
+    C            : 0.5
+    max_iter     : 200
+
+  PERCEPTRON
+    Estimator    : Perceptron
+    max_iter     : 200
+    tol          : 1e-3
+
+  ── Discriminant Analysis ─────────────────────────────────────────────────────
+
+  LDA
+    Estimator    : LinearDiscriminantAnalysis
+    solver       : svd
+
+  QDA
+    Estimator    : QuadraticDiscriminantAnalysis
+    reg_param    : 0.5
+
+  ── Naive Bayes ───────────────────────────────────────────────────────────────
+
+  GAUSSIAN NB
+    Estimator    : GaussianNB
+    var_smoothing: 1e-9
+
+  GAUSSIAN NB 1e-8
+    Estimator    : GaussianNB
+    var_smoothing: 1e-8
+
+  GAUSSIAN NB 1e-7
+    Estimator    : GaussianNB
+    var_smoothing: 1e-7
+
+  ── Prototype ─────────────────────────────────────────────────────────────────
+
+  NEAREST CENTROID
+    Estimator    : NearestCentroid
+    metric       : euclidean
+
+  ── Neighbours ────────────────────────────────────────────────────────────────
+
+  KNN-3
+    Estimator    : KNeighborsClassifier
+    n_neighbors  : 3
+    weights      : uniform
+
+  KNN-11-DIST
+    Estimator    : KNeighborsClassifier
+    n_neighbors  : 11
+    weights      : distance
+
+  ── Decision Trees ────────────────────────────────────────────────────────────
+
+  DECISION TREE
+    Estimator    : DecisionTreeClassifier
+    max_depth    : 3
+    min_samples_leaf: 10
+
+  ── Ensembles ─────────────────────────────────────────────────────────────────
+
+  EXTRA TREES
+    Estimator    : ExtraTreesClassifier
+    n_estimators : 10
+    max_depth    : 5
+    min_samples_leaf: 5
+
+  RANDOM FOREST
+    Estimator    : RandomForestClassifier
+    n_estimators : 20
+    n_jobs       : -1
+    random_state : 42
+
+  RANDOM FOREST DEEP
+    Estimator    : RandomForestClassifier
+    n_estimators : 200
+    max_depth    : None (unlimited)
+    min_samples_leaf: 2
+    max_features : sqrt
+    n_jobs       : -1
+    random_state : 1337
+
+  ADABOOST
+    Estimator    : AdaBoostClassifier
+    n_estimators : 25
+    learning_rate: 0.5
+
+  BAGGING DT2
+    Estimator    : BaggingClassifier (base: DecisionTreeClassifier depth=2)
+    n_estimators : 10
+    max_samples  : 0.7
+
+  BAGGING DT DEEP
+    Estimator    : BaggingClassifier (base: DecisionTreeClassifier depth=5)
+    n_estimators : 50
+    max_samples  : 0.8
+    max_features : 0.8
+
+  GRADIENT BOOST
+    Estimator    : GradientBoostingClassifier
+    n_estimators : 20
+    max_depth    : 3
+    random_state : 42
+
+  GRADIENT BOOST LONG
+    Estimator    : GradientBoostingClassifier
+    n_estimators : 200
+    learning_rate: 0.05
+    max_depth    : 4
+    subsample    : 0.85
+    random_state : 2024
+
+  HIST GBDT
+    Estimator    : HistGradientBoostingClassifier
+    max_iter     : 30
+    max_depth    : 3
+    learning_rate: 0.1
+    random_state : 42
+
+  HIST GBDT LONG
+    Estimator    : HistGradientBoostingClassifier
+    max_iter     : 200
+    max_depth    : None (unlimited)
+    learning_rate: 0.05
+    l2_reg       : 1e-6
+    random_state : 4242
+
+  ── Neural Network (sklearn) ──────────────────────────────────────────────────
+
+  MLP CLASSIFIER
+    Estimator    : MLPClassifier
+    hidden_layers: (32, 16)
+    max_iter     : 50
+    random_state : 42
+
+  MLP CLASSIFIER DEEP
+    Estimator    : MLPClassifier
+    hidden_layers: (128, 64, 32)
+    activation   : relu
+    learning_rate: adaptive
+    alpha        : 1e-4
+    max_iter     : 200
+    random_state : 7
+
+  ── Baselines ─────────────────────────────────────────────────────────────────
+
+  DUMMY MOSTFREQ
+    Estimator    : DummyClassifier
+    strategy     : most_frequent
+
+  DUMMY STRATIFIED
+    Estimator    : DummyClassifier
+    strategy     : stratified
+
+
+================================================================================
+  3. PYTORCH DEEP LEARNING MODELS
+================================================================================
+
+  Shared training regime (all 9 models):
+    Optimizer    : AdamW  (lr=1e-3, weight_decay=1e-4)
+    Loss         : BCEWithLogitsLoss
+    LR scheduler : ReduceLROnPlateau (mode=max, factor=0.5, patience=5)
+    Grad clip    : norm 1.0
+    Batch size   : 256
+    Max epochs   : 200
+    Early stop   : patience=10 on val_acc
+    Evaluation   : sigmoid applied to logits post-hoc
+
+  ── Recurrent ─────────────────────────────────────────────────────────────────
+
+  PYTORCH LSTM
+    Architecture : 2-layer stacked LSTM
+    hidden       : 32
+    dropout      : 0.2 (between layers)
+    readout      : Linear(32 → 1), last timestep
+
+  PYTORCH GRU
+    Architecture : 2-layer stacked GRU
+    hidden       : 32
+    dropout      : 0.2 (between layers)
+    readout      : Linear(32 → 1), last timestep
+
+  PYTORCH BILSTM
+    Architecture : 2-layer bidirectional LSTM  (Huang et al. 2015)
+    hidden       : 32 per direction (64 concatenated)
+    dropout      : 0.2
+    readout      : Linear(64 → 1), last timestep
+
+  ── Convolutional ─────────────────────────────────────────────────────────────
+
+  PYTORCH 1D CNN
+    Architecture : Two Conv1d layers + AdaptiveAvgPool
+    filters      : 32 → 64
+    kernel_size  : 3, padding=1
+    activation   : ReLU
+    readout      : Linear(64 → 1)
+
+  PYTORCH TCN                                       (Bai et al. 2018)
+    Architecture : 4 dilated causal residual blocks
+    filters      : 32
+    kernel_size  : 3
+    dilations    : 1, 2, 4, 8
+    norm         : BatchNorm1d per block
+    activation   : ReLU + residual shortcuts
+    dropout      : 0.2
+    readout      : Linear(32 → 1), last timestep
+
+  PYTORCH LSTM-FCN                                  (Karim et al. 2018)
+    Architecture : Parallel LSTM branch + FCN branch, concatenated
+    LSTM branch  : hidden=32, dropout=0.8
+    FCN branch   : Conv1d(64) → Conv1d(128) → Conv1d(64), BN+ReLU, GlobalAvgPool
+    readout      : Linear(32+64 → 1)
+
+  PYTORCH INCEPTIONTIME                             (Fawaz et al. 2020)
+    Architecture : 3 Inception blocks + residual shortcut + GlobalAvgPool
+    Per block    : bottleneck + parallel Conv1d (k=3, 5, 7) + MaxPool branch
+    filters      : 32 per branch (128 concat)
+    activation   : ReLU + BN
+    readout      : Linear(128 → 1)
+
+  ── Transformer ───────────────────────────────────────────────────────────────
+
+  PYTORCH TRANSFORMER
+    Architecture : Linear projection → TransformerEncoder
+    d_model      : 32
+    nhead        : 2
+    ff_dim       : 64
+    n_layers     : 1
+    dropout      : 0.1
+    readout      : Linear(32 → 1), last timestep
+
+  PYTORCH PATCHTST                                  (Nie et al. 2023, ICLR)
+    Architecture : Patch embedding → TransformerEncoder → mean pool
+    patch_size   : 2
+    d_model      : 32
+    nhead        : 2
+    n_layers     : 2
+    ff_dim       : 128
+    dropout      : 0.1
+    readout      : Linear(32 → 1), mean over patches
+
+
+================================================================================
+  4. QUANTUM MODELS
+================================================================================
+
+  ── 4a. QUANTUM LSTM  (quantum_lstm.py) ──────────────────────────────────────
+
+  QUANTUM LSTM
+    Architecture : Hybrid QLSTM — 4 VQC gates replacing LSTM matrix multiplies
+    qlstm_input  : 1  (compressed input dim, -qi)
+    hidden_size  : 1  (-qh)
+    vqc_depth    : 1  (-qd)
+    n_qubits     : qlstm_input + hidden_size = 2
+    Encoding     : Hadamard layer + RY rotations on concat(input, hidden)
+    Gates        : input_gate, forget_gate, cell_gate, output_gate (each a VQC)
+    Gate acts    : sigmoid (i, f, o),  tanh (g, hidden state)
+    Compressor   : nn.Linear(features → qlstm_input)
+    Optimizer    : RMSprop  (lr=0.01)
+    Loss         : MSELoss
+    Epochs       : set via -qe
+    Time budget  : set via -qt  (0 = full dataset)
+
+  ── 4b. QUANTUM FED QLSTM  (fed_qlstm.py) ────────────────────────────────────
+
+  QUANTUM FED QLSTM
+    Architecture : FedAvg over QLSTM client shards (same QLSTMModel as above)
+    qlstm_input  : 1
+    hidden_size  : 1
+    vqc_depth    : 1
+    n_qubits     : 2
+    clients      : 4  (--fed_clients)
+    clients/round: 1  (--fed_clients_per_round)
+    local_steps  : 1  (--fed_local_steps)
+    Optimizer    : RMSprop per client  (lr=0.01)
+    Aggregation  : FedAvg (mean of client state dicts)
+    Loss         : MSELoss
+
+  ── 4c. QUANTUM BATCH QLSTM  (QLSTM_v0_Batch.py) ────────────────────────────
+
+  QUANTUM BATCH QLSTM
+    Architecture : Batch-friendly QLSTM (same gate structure, batched data)
+    qlstm_input  : 1
+    hidden_size  : 1
+    vqc_depth    : 1
+    n_qubits     : 2
+    Encoding     : Hadamard layer + RY rotations
+    Compressor   : nn.Linear(features → qlstm_input)
+    Optimizer    : RMSprop  (lr=0.01)
+    Loss         : MSELoss
+    Epochs       : set via --qbatch_epoch
+    Time budget  : set via --qbatch_time  (0 = full dataset)
+
+  ── 4d. QUANTUM BATCH VQFWP  (vqFWP_Batch_time_series.py) ───────────────────
+
+  QUANTUM BATCH VQFWP
+    Architecture : Variational Quantum Fast-Weight Programmer
+    n_qubits     : 2
+    fast_depth   : 1
+    latent_size  : 4
+    n_outputs    : 1
+    fast_decay   : 0.9  (EMA blend of fast weights across timesteps)
+    Encoding     : Hadamard layer + RY rotations on compressed input
+    Compressor   : nn.Linear(features → n_qubits)
+    Fast weights : nn.Linear(latent → fast_depth × n_qubits), updated per step
+    Optimizer    : RMSprop  (lr=0.01)
+    Loss         : MSELoss
+    Epochs       : set via --qbatch_epoch
+    Time budget  : set via --qbatch_time  (0 = full dataset)
+
+  ── 4e. VQC VARIANTS — shared config ─────────────────────────────────────────
+
+  All VQC variants share this wrapper (BaseQuantumClassifierTrainer):
+    Compressor   : nn.Linear(features → n_qubits) + Tanh
+                   (last timestep only — pv_array[:, -1, :])
+    Output head  : nn.Linear(n_qubits → 1) + Sigmoid
+    Optimizer    : Adam  (lr=0.01)
+    Loss         : BCELoss
+    Epochs       : set via -qe
+    Time budget  : set via -qt  (0 = full dataset)
+    Checkpoint   : every 300s during training
+    Measurement  : PauliZ expectation value on each wire
+
+  ── 4f. VQC VARIANTS — v1 (original 6) ──────────────────────────────────────
+
+  QUANTUM HARDWARE EFFICIENT
+    n_qubits     : 6
+    depth        : 2
+    Encoding     : AngleEmbedding (RY)
+    Ansatz       : StronglyEntanglingLayers
+    Weights shape: (depth=2, n_qubits=6, 3)
+
+  QUANTUM BASIC ENTANGLER
+    n_qubits     : 6
+    depth        : 3
+    Encoding     : AngleEmbedding (RX)
+    Ansatz       : BasicEntanglerLayers
+    Weights shape: (depth=3, n_qubits=6)
+
+  QUANTUM RANDOM LAYERS
+    n_qubits     : 5
+    depth        : 4
+    Encoding     : AngleEmbedding (RZ)
+    Ansatz       : RandomLayers
+    Weights shape: (depth=4, n_qubits=5)
+
+  QUANTUM TREE ANSATZ
+    n_qubits     : 6
+    depth        : 3
+    Encoding     : AngleEmbedding (RY)
+    Ansatz       : RY per qubit + alternating CNOT tree (even/odd pairs)
+    Weights shape: (depth=3, n_qubits=6)
+
+  QUANTUM FOURIER FEATURES
+    n_qubits     : 5
+    depth        : 2
+    Encoding     : AngleEmbedding (RY)
+    Ansatz       : RX rotations per layer + QFT at end
+    Weights shape: (depth=2, n_qubits=5)
+
+  QUANTUM DATA REUPLOAD
+    n_qubits     : 4
+    depth        : 4
+    Encoding     : AngleEmbedding (RY) re-uploaded every layer
+    Ansatz       : RZ per qubit + linear CNOT chain per layer
+    Weights shape: (depth=4, n_qubits=4)
+
+  ── 4g. VQC VARIANTS — v3 (10 architectures) ─────────────────────────────────
+
+  QUANTUM GHZ INIT
+    n_qubits     : 6
+    depth        : 2
+    Encoding     : GHZ state init (H + CNOT chain) then AngleEmbedding (RY)
+    Ansatz       : RY+RZ per qubit + linear CNOT chain
+    Weights shape: (depth=2, n_qubits=6, 2)
+
+  QUANTUM QAOA STYLE
+    n_qubits     : 6
+    depth        : 4
+    Encoding     : AngleEmbedding (RY)
+    Ansatz       : CNOT + RZ (cost layer) + RX (mixer layer), shared weights
+    Weights shape: (depth=4, 2)
+
+  QUANTUM ISING ZZ
+    n_qubits     : 6
+    depth        : 3
+    Encoding     : AngleEmbedding (RY)
+    Ansatz       : RY per qubit + CRZ on adjacent pairs
+    Weights shape: (depth=3, n_qubits + n_qubits-1 = 11)
+
+  QUANTUM CTRL PHASE
+    n_qubits     : 6
+    depth        : 3
+    Encoding     : AngleEmbedding (RY)
+    Ansatz       : RY+RZ per qubit + ControlledPhaseShift on adjacent pairs
+    Weights shape: (depth=3, n_qubits=6, 2)
+
+  QUANTUM PERM SYMMETRIC
+    n_qubits     : 8
+    depth        : 4
+    Encoding     : AngleEmbedding (RY)
+    Ansatz       : Rot(w0,w1,w2) on all qubits (shared weights) + CNOT ring
+    Weights shape: (depth=4, 3)
+
+  QUANTUM LAYERED ENC
+    n_qubits     : 6
+    depth        : 6
+    Encoding     : AngleEmbedding per layer, rotating axis X/Y/Z each layer
+    Ansatz       : RY per qubit + linear CNOT chain per layer
+    Weights shape: (depth=6, n_qubits=6)
+
+  QUANTUM DRESSED DEEP  (custom model: DressedDeepModel)
+    n_qubits     : 3
+    depth        : 2
+    Architecture : Deep classical MLP → 3-qubit quantum core → deep classical MLP
+    Pre-net      : Linear(→32) → ReLU → Linear(→16) → ReLU → Linear(→3) → Tanh
+    Quantum core : hardware ansatz (StronglyEntanglingLayers)
+    Post-net     : Linear(3→16) → ReLU → Linear(16→1) → Sigmoid
+    Weights shape: (depth=2, n_qubits=3, 3)
+
+  QUANTUM RESERVOIR  (custom model: QuantumReservoirModel)
+    n_qubits     : 6
+    depth        : 4
+    Architecture : Fixed random quantum circuit — only classical readout trains
+    Encoding     : AngleEmbedding (RY) after Linear + Tanh
+    Ansatz       : RandomLayers  (weights FROZEN — not trained)
+    Readout      : Linear(6→8) → ReLU → Linear(8→1) → Sigmoid
+    Weights shape: (depth=4, n_qubits=6)  [frozen]
+
+  QUANTUM CHECKERBOARD 2D  (custom model: Checkerboard2DModel)
+    n_qubits     : 8  (4×2 grid)
+    depth        : 2
+    Encoding     : AngleEmbedding (RY)
+    Ansatz       : RY+RZ per qubit + horizontal CNOTs + vertical CNOTs
+    Readout      : Linear(8→1) → Sigmoid
+    Weights shape: (depth=2, n_qubits=8, 2)
+
+  QUANTUM MULTI SCALE  (custom model: MultiScaleModel)
+    n_qubits     : 4
+    depth        : 1 (shallow) + 4 (deep), two parallel circuits
+    Architecture : Shared projection → two parallel VQCs → concat → fuse
+    Shallow VQC  : hardware ansatz, depth=1
+    Deep VQC     : basic ansatz, depth=4
+    Readout      : Linear(4+4=8 → 1) → Sigmoid
+
+  ── 4h. VQC VARIANTS — v4 (6 new architectures) ─────────────────────────────
+
+  QUANTUM RYRZ
+    n_qubits     : 6
+    depth        : 3
+    Encoding     : AngleEmbedding (RY)
+    Ansatz       : RY+RZ per qubit + linear CNOT chain (standard VQE ansatz)
+    Weights shape: (depth=3, n_qubits=6, 2)
+
+  QUANTUM IQP
+    n_qubits     : 5
+    depth        : 2
+    Encoding     : Hadamard layer + AngleEmbedding (RZ)
+    Ansatz       : CNOT-RZ-CNOT ZZ phase interactions + Hadamard per layer
+    Weights shape: (depth=2, n_qubits-1=4)
+
+  QUANTUM TTN
+    n_qubits     : 8
+    depth        : 2
+    Encoding     : AngleEmbedding (RY)
+    Ansatz       : RY per qubit + binary-tree CNOT connectivity
+    Weights shape: (depth=2, n_qubits=8)
+
+  QUANTUM BRICK WALL
+    n_qubits     : 6
+    depth        : 4
+    Encoding     : AngleEmbedding (RY)
+    Ansatz       : RY+RZ per qubit + alternating even/odd CNOT pairs
+    Weights shape: (depth=4, n_qubits=6, 2)
+
+  QUANTUM CRX CHAIN
+    n_qubits     : 5
+    depth        : 3
+    Encoding     : AngleEmbedding (RY) re-uploaded every layer
+    Ansatz       : RZ per qubit + CRX on adjacent pairs
+    Weights shape: (depth=3, 2×n_qubits-1=9)
+
+  QUANTUM ISING EVOL
+    n_qubits     : 6
+    depth        : 2
+    Encoding     : AngleEmbedding (RY)
+    Ansatz       : CNOT-RZ-CNOT (ZZ Ising) + RX transverse field (Trotterized)
+    Weights shape: (depth=2, 2×n_qubits-1=11)
+
+
+================================================================================
+  TOTAL MODEL COUNT
+================================================================================
+
+  Classical ALSTM              :  1
+  Sklearn models               : 31
+  PyTorch deep learning        :  9
+  Quantum LSTM                 :  1
+  Quantum Fed QLSTM            :  1
+  Quantum Batch QLSTM          :  1
+  Quantum Batch VQFWP          :  1
+  VQC variants (v1)            :  6
+  VQC variants (v3)            : 10
+  VQC variants (v4)            :  6
+                               ────
+  TOTAL                        : 67
+
+================================================================================
